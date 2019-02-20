@@ -1,7 +1,7 @@
 # clock_spec.rb
 require 'minitest/autorun'
 require 'minitest/reporters'
-require_relative 'clock'
+require_relative '../lib/clock'
 
 Minitest::Reporters.use!
 
@@ -43,5 +43,24 @@ describe "clock" do
 
     #Assert
     expect(result).must_equal "10:22:35"
+  end
+  it "doesn't allow negative numbers" do
+    #Arrange
+    values = [
+      {hours: -1, minutes: 1, seconds: 1},
+      {hours: 1, minutes: -1, seconds: 1},
+      {hours: 1, minutes: 1, seconds: -1}
+    ]
+
+    #Act
+    values.each do |time|
+      expect {
+        clock(
+          time[:hours],
+          time[:minutes],
+          time[:seconds]
+        )
+      }.must_raise ArgumentError
+    end
   end
 end
